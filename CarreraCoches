@@ -1,0 +1,131 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Random;
+
+public class JuegoCarrera {
+    public static void main(String[] args) throws IOException{
+
+        BufferedReader lector=new BufferedReader(new InputStreamReader(System.in));
+
+            String nombreUsuario;
+            int opcion;
+            int pilotoElegido;
+            int neumaticoElegido;
+            int vueltas;
+            final String VERDE = "\u001B[32m";
+            final String RESET = "\u001B[0m";
+            final String CIAN = "\u001B[36m";
+            final String AMARILLO = "\u001B[33m";
+            final String ROJO = "\u001B[31m";
+
+            Random random = new Random();
+
+            String[] pilotos = {
+                "Fernado Alonso", "Carlos Sainz", 
+                "Max Verstappen", "Lewis Hamilton",
+                "Lando Norris", "George Rusell"
+            };
+
+            String[] neumaticos = {
+                "Blando", "Medio", "Duro"
+            };
+
+            double[] tiempos = new double[pilotos.length];
+
+
+        System.out.println("¿Cual es tu nombre? ");
+        nombreUsuario = lector.readLine();
+
+        System.out.println( VERDE + "Bienvenido al Juego: " + CIAN + nombreUsuario +  " A CORRER" +RESET );
+
+        do {
+            System.out.println("\n=== JUEGO DE CARRERAS ===");
+            System.out.println("1. Nueva Carrera");
+            System.out.println("2. Salir");
+            System.out.print("Elige una opcion: ");
+
+            opcion = Integer.parseInt(lector.readLine());
+
+            if (opcion == 1){
+                System.out.println("\n--- PILOTOS ---");
+
+                for (int i = 0; i < pilotos.length; i++){
+                    System.out.println((i+1) + ". " + pilotos[i]);
+
+                }
+
+                System.out.print("Elige tu piloto: ");
+                pilotoElegido = Integer.parseInt(lector.readLine());
+
+                if (pilotoElegido < 1 || pilotoElegido > pilotos.length){
+                    System.out.println( ROJO + "Piloto no valido " + RESET);
+                    continue;
+
+                }
+
+                System.out.println("\n--- NEUMATICOS ---");
+
+                for (int i = 0; i < neumaticos.length; i++){
+                    System.out.println((i+1) + ". " + neumaticos[i]);
+
+                }
+
+                System.out.println("Elige tus neumaticos: ");
+                neumaticoElegido = Integer.parseInt(lector.readLine());
+
+                if (neumaticoElegido < 1 || neumaticoElegido > pilotos.length){
+                    System.out.println( ROJO + "Neumatico no valido" + RESET);
+                    continue;
+
+                }
+
+                System.out.println("Numero de vueltas (5-10): ");
+                vueltas = Integer.parseInt(lector.readLine());
+
+                if (vueltas < 5 || vueltas > 10){
+                    System.out.println( ROJO + "Numero de vueltas no válido" + RESET);
+                    continue;
+                }
+
+                System.out.println( AMARILLO +"\n¡COMIENZA LA CARRERA" + RESET);
+                
+                for (int i = 0; i < pilotos.length; i++){
+
+                    tiempos[i] = 0;
+
+                    for (int v = 0; v < vueltas; v++){
+                        double tiempoVuelta = 80 + random.nextDouble() * 10;
+                        
+                        if (i == pilotoElegido - 1){
+
+                            if (neumaticoElegido == 1){
+                                tiempoVuelta -= 2;
+
+                            }else if (neumaticoElegido == 3){
+                                tiempoVuelta += 2;
+                            }
+                        
+                    }
+
+                    tiempos[i] += tiempoVuelta;
+
+                    }
+
+                }
+
+                int ganador = 0;
+                
+                for (int i = 1; i < tiempos.length;i++){
+                    if (tiempos[i] < tiempos[ganador]){
+                        ganador = 1;
+                    }
+
+                }
+
+                System.out.println(VERDE +"\n--- RESULTADOS ---" + RESET);
+            }
+        } while (opcion != 2);
+
+        System.out.println( ROJO + "Gracias " + AMARILLO + "por " + ROJO +"jugar." + RESET);
+    }
